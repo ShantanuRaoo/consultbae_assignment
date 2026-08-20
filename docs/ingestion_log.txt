@@ -1,0 +1,61 @@
+naukri row 0: CTC 417964.0 converted to 4.17 LPA (truncated)
+naukri row 1: CTC 332456.0 converted to 3.32 LPA (truncated)
+naukri row 2: CTC 775670.0 converted to 7.75 LPA (truncated)
+naukri row 3: CTC 654699.0 converted to 6.54 LPA (truncated)
+naukri row 4: CTC 4.2 treated as already-in-lakhs, kept as-is
+naukri row 5: CTC 806661.0 converted to 8.06 LPA (truncated)
+naukri row 6: CTC 8.3 treated as already-in-lakhs, kept as-is
+naukri row 7: CTC 472935.0 converted to 4.72 LPA (truncated)
+naukri row 8: CTC 366311.0 converted to 3.66 LPA (truncated)
+naukri row 9: CTC 871686.0 converted to 8.71 LPA (truncated)
+naukri row 10: CTC 864237.0 converted to 8.64 LPA (truncated)
+naukri row 11: CTC 1195422.0 converted to 11.95 LPA (truncated)
+naukri row 12: CTC 5.1 treated as already-in-lakhs, kept as-is
+naukri row 13: CTC 826748.0 converted to 8.26 LPA (truncated)
+naukri row 14: CTC 6.1 treated as already-in-lakhs, kept as-is
+naukri row 15: CTC 5.8 treated as already-in-lakhs, kept as-is
+naukri row 16: CTC 11.2 treated as already-in-lakhs, kept as-is
+naukri row 17: CTC 7.6 treated as already-in-lakhs, kept as-is
+naukri row 18: CTC 1181149.0 converted to 11.81 LPA (truncated)
+naukri row 19: CTC 2.4 treated as already-in-lakhs, kept as-is
+naukri row 20: CTC 10.0 treated as already-in-lakhs, kept as-is
+naukri row 21: CTC 327287.0 converted to 3.27 LPA (truncated)
+naukri row 22: CTC 11.9 treated as already-in-lakhs, kept as-is
+naukri row 23: CTC 6.1 treated as already-in-lakhs, kept as-is
+naukri row 23: abbreviated name 'R. Verma' — will resolve on merge if a fuller match is found
+naukri row 24: CTC 410629.0 converted to 4.1 LPA (truncated)
+naukri row 25: CTC 7.8 treated as already-in-lakhs, kept as-is
+naukri row 26: CTC 6.6 treated as already-in-lakhs, kept as-is
+naukri row 27: CTC 775796.0 converted to 7.75 LPA (truncated)
+naukri row 28: CTC 792474.0 converted to 7.92 LPA (truncated)
+naukri row 29: CTC 6.1 treated as already-in-lakhs, kept as-is
+naukri row 30: CTC 7.6 treated as already-in-lakhs, kept as-is
+naukri row 31: CTC 1160787.0 converted to 11.6 LPA (truncated)
+naukri row 32: CTC 2.7 treated as already-in-lakhs, kept as-is
+naukri row 33: CTC 1135514.0 converted to 11.35 LPA (truncated)
+naukri row 34: CTC 11.4 treated as already-in-lakhs, kept as-is
+naukri row 35: CTC 7.8 treated as already-in-lakhs, kept as-is
+naukri row 36: CTC 626740.0 converted to 6.26 LPA (truncated)
+naukri row 37: CTC 9.3 treated as already-in-lakhs, kept as-is
+naukri row 38: CTC 5.9 treated as already-in-lakhs, kept as-is
+naukri row 39: CTC 621881.0 converted to 6.21 LPA (truncated)
+naukri row 40: CTC 10.3 treated as already-in-lakhs, kept as-is
+naukri row 41: CTC 694306.0 converted to 6.94 LPA (truncated)
+gig_workers row 4: converted monthly rate '15k/month' to hourly (93.75/hr) using 160 hrs/month assumption
+gig_workers row 8: converted monthly rate '72k/month' to hourly (450.00/hr) using 160 hrs/month assumption
+gig_workers row 10: fully null row, skipped
+gig_workers row 12: converted monthly rate '28k/month' to hourly (175.00/hr) using 160 hrs/month assumption
+gig_workers row 14: converted monthly rate '56k/month' to hourly (350.00/hr) using 160 hrs/month assumption
+gig_workers row 15: converted monthly rate '79k/month' to hourly (493.75/hr) using 160 hrs/month assumption
+gig_workers row 16: converted monthly rate '42k/month' to hourly (262.50/hr) using 160 hrs/month assumption
+gig_workers row 17: converted monthly rate '73k/month' to hourly (456.25/hr) using 160 hrs/month assumption
+gig_workers row 18: column-shifted row detected, fields realigned
+gig_workers row 19: converted monthly rate '55k/month' to hourly (343.75/hr) using 160 hrs/month assumption
+gig_workers row 21: converted monthly rate '22k/month' to hourly (137.50/hr) using 160 hrs/month assumption
+gig_workers row 22: converted monthly rate '21k/month' to hourly (131.25/hr) using 160 hrs/month assumption
+gig_workers row 24: converted monthly rate '59k/month' to hourly (368.75/hr) using 160 hrs/month assumption
+gig_workers row 26: converted monthly rate '38k/month' to hourly (237.50/hr) using 160 hrs/month assumption
+gig_workers row 29: converted monthly rate '73k/month' to hourly (456.25/hr) using 160 hrs/month assumption
+gig_workers row 31: converted monthly rate '71k/month' to hourly (443.75/hr) using 160 hrs/month assumption
+cbnexus row 14: stray header row found in data, skipped
+name resolved on merge: 'R. VERMA' -> 'ROHIT VERMA'
