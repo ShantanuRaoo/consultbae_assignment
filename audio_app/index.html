@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ConsultBae Audio Collection</title>
+</head>
+<body>
+
+<h1>ConsultBae Audio Collection — Task 3 Demo</h1>
+
+<button id="showSubmitBtn">Submit Audio</button>
+<button id="showListBtn">View Submissions</button>
+
+<hr>
+
+<!-- ===================== SUBMIT VIEW ===================== -->
+<div id="submitView">
+  <h2>Submit</h2>
+
+  <form id="submitForm">
+    <label>Name: <input type="text" id="nameInput" required></label><br><br>
+    <label>Phone: <input type="tel" id="phoneInput" required></label><br><br>
+
+    <p>Record in browser:</p>
+    <button type="button" id="recordBtn">Start Recording</button>
+    <button type="button" id="stopBtn" disabled>Stop Recording</button>
+    <span id="recordStatus"></span>
+
+    <p>OR upload an audio file instead:</p>
+    <input type="file" id="fileInput" accept="audio/*">
+
+    <p>Preview:</p>
+    <audio id="previewPlayer" controls></audio>
+
+    <br><br>
+    <button type="submit" id="submitBtn">Submit</button>
+  </form>
+
+  <div id="submitMessage"></div>
+</div>
+
+<!-- ===================== SUBMISSIONS LIST VIEW ===================== -->
+<div id="listView" style="display:none;">
+  <h2>All Submissions</h2>
+  <button id="refreshBtn">Refresh</button>
+
+  <table border="1" cellpadding="6">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Audio</th>
+        <th>Duration (s)</th>
+        <th>Sample Rate (Hz)</th>
+        <th>Bitrate (bps)</th>
+        <th>Loudness (dB)</th>
+        <th>Quality</th>
+        <th>Submitted At</th>
+      </tr>
+    </thead>
+    <tbody id="submissionsBody"></tbody>
+  </table>
+</div>
+
+<script>
+// ---------------------------------------------------------------------
+// View toggling
+// ---------------------------------------------------------------------
+const submitView = document.getElementById('submitView');
+const listView = document.getElementById('listView');
+
+document.getElementById('showSubmitBtn').onclick = () => {
+  submitView.style.display = 'block';
+  listView.style.display = 'none';
+};
+
+document.getElementById('showListBtn').onclick = () => {
+  submitView.style.display = 'none';
+  listView.style.display = 'block';
+  loadSubmissions();
+};
+
+// ---------------------------------------------------------------------
+// Recording (MediaRecorder) with file-upload fallback
+// ---------------------------------------------------------------------
+let mediaRecorder = null;
+let recordedChunks = [];
+let recordedBlob = null;
+
+const recordBtn = document.getElementById('recordBtn');
+const stopBtn = document.getElementById('stopBtn');
+const recordStatus = document.getElementById('recordStatus');
+const fileInput = document.getElementById('fileInput');
+const previewPlayer = document.getElementById('previewPlayer');
+
+recordBtn.onclick = async () => {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    recordedChunks = [];
+    mediaRecorder = new MediaRecorder(stream);
+
+    mediaRecorder.ondataavailable = (e) => {
+      if (e.data.size > 0) recordedChunks.push(e.data);
+    };
+
+    mediaRecorder.onstop = () => {
+      recordedBlob = new Blob(recordedChunks, { type: 'audio/webm' });
+      previewPlayer.src = URL.createObjectURL(recordedBlob);
+      fileInput.value = '';  // recording takes priority over any previously chosen file
+      recordStatus.textContent = 'Recording captured.';
+      stream.getTracks().forEach(track => track.stop());
+    };
+
+    mediaRecorder.start();
+    recordBtn.disabled = true;
+    stopBtn.disabled = false;
+    recordStatus.textContent = 'Recording...';
+  } catch (err) {
+    recordStatus.textContent = 'Microphone access denied or unavailable — use file upload instead.';
+  }
+};
+
+stopBtn.onclick = () => {
+  if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+    mediaRecorder.stop();
+  }
+  recordBtn.disabled = false;
+  stopBtn.disabled = true;
+};
+
+fileInput.onchange = () => {
+  if (fileInput.files.length > 0) {
+    recordedBlob = null;  // uploaded file takes priority over any previous recording
+    previewPlayer.src = URL.createObjectURL(fileInput.files[0]);
+  }
+};
+
+// ---------------------------------------------------------------------
+// Submit
+// ---------------------------------------------------------------------
+document.getElementById('submitForm').onsubmit = async (e) => {
+  e.preventDefault();
+
+  const name = document.getElementById('nameInput').value.trim();
+  const phone = document.getElementById('phoneInput').value.trim();
+  const messageBox = document.getElementById('submitMessage');
+  const submitBtn = document.getElementById('submitBtn');
+
+  let audioFile = null;
+  if (recordedBlob) {
+    audioFile = new File([recordedBlob], 'recording.webm', { type: 'audio/webm' });
+  } else if (fileInput.files.length > 0) {
+    audioFile = fileInput.files[0];
+  }
+
+  if (!audioFile) {
+    messageBox.textContent = 'Please record audio or choose a file first.';
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('name', name);
+  formData.append('phone', phone);
+  formData.append('audio', audioFile);
+
+  submitBtn.disabled = true;
+  messageBox.textContent = 'Uploading and processing...';
+
+  try {
+    const res = await fetch('/submit', { method: 'POST', body: formData });
+    const data = await res.json();
+
+    if (!res.ok) {
+      messageBox.textContent = 'Error: ' + (data.detail || 'submission failed');
+    } else {
+      messageBox.textContent =
+        `Submitted. Duration: ${data.duration_sec}s, ` +
+        `Sample rate: ${data.sample_rate}Hz, ` +
+        `Bitrate: ${data.bitrate}bps, ` +
+        `Loudness: ${data.loudness_db}dB, ` +
+        `Quality: ${data.quality_estimate}, ` +
+        `Matched existing candidate: ${data.matched_existing_candidate}`;
+    }
+  } catch (err) {
+    messageBox.textContent = 'Network error: ' + err.message;
+  } finally {
+    submitBtn.disabled = false;
+  }
+};
+
+// ---------------------------------------------------------------------
+// Submissions list
+// ---------------------------------------------------------------------
+document.getElementById('refreshBtn').onclick = loadSubmissions;
+
+async function loadSubmissions() {
+  const tbody = document.getElementById('submissionsBody');
+  tbody.innerHTML = '<tr><td colspan="9">Loading...</td></tr>';
+
+  try {
+    const res = await fetch('/submissions');
+    const rows = await res.json();
+
+    if (rows.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="9">No submissions yet.</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = '';
+    for (const row of rows) {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${row.name ?? ''}</td>
+        <td>${row.phone ?? ''}</td>
+        <td><audio controls src="${row.audio_url}"></audio></td>
+        <td>${row.duration_sec}</td>
+        <td>${row.sample_rate}</td>
+        <td>${row.bitrate}</td>
+        <td>${row.loudness_db}</td>
+        <td>${row.quality_estimate}</td>
+        <td>${row.created_at}</td>
+      `;
+      tbody.appendChild(tr);
+    }
+  } catch (err) {
+    tbody.innerHTML = `<tr><td colspan="9">Failed to load: ${err.message}</td></tr>`;
+  }
+}
+</script>
+
+</body>
+</html>

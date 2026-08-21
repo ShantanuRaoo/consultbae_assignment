@@ -1,0 +1,14 @@
+
+pandas==2.2.2
+psycopg2-binary==2.9.9
+rapidfuzz==3.9.6
+python-dateutil==2.9.0.post0
+python-dotenv==1.0.1
+
+
+fastapi==0.111.0
+uvicorn[standard]==0.30.1
+python-multipart==0.0.9        
+soundfile==0.12.1             
+librosa==0.10.2.post1          
+numpy==1.26.4                  
