@@ -22,7 +22,7 @@ Consultbae-Assignment/
 ├── README.md
 ├── docker-compose.yml
 ├── requirements.txt
-├── Consultbae_workflow.json     # exported n8n workflow
+├── skillTag_workflow.json     # exported n8n workflow
 ├── original_csv/
 │   ├── source1_naukri_applicants.csv
 │   ├── source2_gig_workers.csv
@@ -48,10 +48,10 @@ Consultbae-Assignment/
 
 **1. Environment variables** — create `.env` at the repo root:
 ```
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=password
-POSTGRES_DB=pythonTodb
-DATABASE_URL=postgresql://postgres:password@localhost:5432/pythonTodb
+POSTGRES_USER=<your_username>
+POSTGRES_PASSWORD=<your_password>
+POSTGRES_DB=<your_db_name>
+DATABASE_URL=postgresql://<your_username>:<your_password>@localhost:5432/<your_db_name>
 ```
 
 **2. Start Postgres + n8n:**
@@ -189,6 +189,6 @@ actual run.
 - README with setup steps
 - Data issues report
 - Stuck log
-- `Consultbae_workflow.json` exported
-- Loom recording 
+- `automation/flow.json` exported
+- Loom recording (max 6 min)
 - Reply to assignment email with repo + video links
